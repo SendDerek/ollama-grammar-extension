@@ -84,6 +84,8 @@ You should see:
 Listening on 127.0.0.1:11434
 ```
 
+**💡 Want to use Ollama Desktop too?** See [Running Ollama for Extension + Desktop App](#-running-ollama-for-extension--desktop-app) to run the extension on port 11435 and auto-start at login!
+
 **Why is this needed?**
 Chrome extensions have origins like `chrome-extension://abc123...`. Without setting `OLLAMA_ORIGINS`, Ollama will reject requests from the extension due to CORS (Cross-Origin Resource Sharing) restrictions.
 
@@ -381,27 +383,170 @@ ollama-grammar-extension/
 
 ---
 
-## 🔄 Keeping Ollama Running
+## 🔄 Running Ollama for Extension + Desktop App
 
-**Remember:** Always use `OLLAMA_ORIGINS="chrome-extension://*"` for Chrome extension support!
+**Problem:** Ollama Desktop uses port 11434, but the extension needs CORS support which Desktop doesn't provide.
 
-### Option 1: Terminal Window
+**Solution:** Run a separate Ollama instance on a different port (11435) just for the extension!
+
+### Quick Start (Temporary)
+
+Run Ollama on port 11435 with CORS for the extension:
 ```bash
-OLLAMA_ORIGINS="chrome-extension://*" ollama serve
-# Keep this terminal open
+OLLAMA_HOST=127.0.0.1:11435 OLLAMA_ORIGINS="chrome-extension://*" ollama serve
 ```
 
-### Option 2: Background Process
-```bash
-# macOS/Linux
-OLLAMA_ORIGINS="chrome-extension://*" ollama serve > /dev/null 2>&1 &
+Then update the extension settings:
+1. Click extension icon
+2. Change URL to: `http://localhost:11435`
+3. Test connection
+4. Save
 
-# To stop later:
-killall ollama
+Now you can use:
+- **Ollama Desktop** on default port 11434
+- **Extension** on port 11435
+
+---
+
+### Auto-Start at System Startup (Recommended)
+
+Keep the extension backend running automatically while still using Ollama Desktop.
+
+#### macOS - LaunchAgent
+
+1. **Create the plist file:**
+```bash
+mkdir -p ~/Library/LaunchAgents
+cat > ~/Library/LaunchAgents/com.ollama.extension.plist << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ollama.extension</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/ollama</string>
+        <string>serve</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>OLLAMA_HOST</key>
+        <string>127.0.0.1:11435</string>
+        <key>OLLAMA_ORIGINS</key>
+        <string>chrome-extension://*</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/ollama-extension.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/ollama-extension.error.log</string>
+</dict>
+</plist>
+EOF
 ```
 
-### Option 3: System Service
-Check Ollama docs for setting up as a system service.
+2. **Load the service:**
+```bash
+launchctl load ~/Library/LaunchAgents/com.ollama.extension.plist
+```
+
+3. **Check if it's running:**
+```bash
+curl http://localhost:11435/api/tags
+```
+
+4. **To stop/unload:**
+```bash
+launchctl unload ~/Library/LaunchAgents/com.ollama.extension.plist
+```
+
+#### Linux - systemd
+
+1. **Create the service file:**
+```bash
+sudo tee /etc/systemd/system/ollama-extension.service << 'EOF'
+[Unit]
+Description=Ollama Extension Backend
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+Environment="OLLAMA_HOST=127.0.0.1:11435"
+Environment="OLLAMA_ORIGINS=chrome-extension://*"
+ExecStart=/usr/local/bin/ollama serve
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+2. **Replace YOUR_USERNAME:**
+```bash
+sudo sed -i "s/YOUR_USERNAME/$USER/" /etc/systemd/system/ollama-extension.service
+```
+
+3. **Enable and start:**
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable ollama-extension.service
+sudo systemctl start ollama-extension.service
+```
+
+4. **Check status:**
+```bash
+sudo systemctl status ollama-extension.service
+curl http://localhost:11435/api/tags
+```
+
+5. **View logs:**
+```bash
+sudo journalctl -u ollama-extension.service -f
+```
+
+#### Windows - Task Scheduler
+
+1. **Create a batch file** (`C:\ollama-extension.bat`):
+```batch
+@echo off
+set OLLAMA_HOST=127.0.0.1:11435
+set OLLAMA_ORIGINS=chrome-extension://*
+"C:\Program Files\Ollama\ollama.exe" serve
+```
+
+2. **Create scheduled task:**
+- Open Task Scheduler
+- Create Basic Task
+- Name: "Ollama Extension Backend"
+- Trigger: "When I log on"
+- Action: "Start a program"
+- Program: `C:\ollama-extension.bat`
+- Check "Run whether user is logged on or not"
+- Check "Run with highest privileges"
+
+3. **Test:**
+```cmd
+curl http://localhost:11435/api/tags
+```
+
+---
+
+### Extension Configuration
+
+After setting up auto-start on port 11435:
+
+1. Click extension icon
+2. Set URL: `http://localhost:11435`
+3. Click "Test Connection"
+4. Click "Save Settings"
+
+Now the extension uses port 11435 and Ollama Desktop uses the default 11434!
 
 ---
 
