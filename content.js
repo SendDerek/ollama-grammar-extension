@@ -92,6 +92,12 @@ function setTextInElement(element, text) {
 async function analyzeText(text, element) {
   if (!text || text.length < 10) return;
 
+  // Check if extension context is valid
+  if (!chrome.runtime || !chrome.runtime.id) {
+    showError(element, 'Extension was reloaded. Please refresh this page (F5) to reconnect.');
+    return;
+  }
+
   lastAnalyzedText = text;
   showLoadingIndicator(element);
 

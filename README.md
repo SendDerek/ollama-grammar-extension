@@ -234,7 +234,9 @@ ollama list | grep qwen
 5. ✅ Typed 10+ characters?
 6. ✅ Waited 0.5 seconds?
 
-**Most common issue:** Forgetting `OLLAMA_ORIGINS="chrome-extension://*"` when starting Ollama!
+**Most common issues:**
+- Forgetting `OLLAMA_ORIGINS="chrome-extension://*"` when starting Ollama!
+- **"Extension was reloaded" error:** If you reload the extension while a page is open, refresh the page (F5) to reconnect.
 
 **Force analysis:**
 Press **Ctrl+Shift+G**
