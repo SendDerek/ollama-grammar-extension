@@ -27,19 +27,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 function handleFocus(e) {
-  console.log('[Content] Focus event on:', e.target.tagName, e.target.id);
   if (isTextInput(e.target)) {
     activeElement = e.target;
-    console.log('[Content] Set activeElement to:', e.target.id);
   }
 }
 
 function handleBlur(e) {
-  console.log('[Content] Blur event on:', e.target.tagName, e.target.id);
   if (e.target === activeElement) {
     setTimeout(() => {
       if (document.activeElement !== activeElement) {
-        console.log('[Content] Clearing activeElement');
         activeElement = null;
         removeSuggestionBox();
       }
@@ -48,53 +44,32 @@ function handleBlur(e) {
 }
 
 function handleInput(e) {
-  console.log('[Content] Input event detected on:', e.target.tagName, e.target.type, e.target.id);
-  
   if (!isEnabled || !isTextInput(e.target)) {
-    console.log('[Content] Input rejected - enabled:', isEnabled, 'isTextInput:', isTextInput(e.target));
     return;
   }
-  
+
   activeElement = e.target;
   const text = getTextFromElement(e.target);
-  
-  console.log('[Content] Text from element:', text.substring(0, 50) + '...');
-  console.log('[Content] Text length:', text.length);
-  
+
   clearTimeout(debounceTimer);
-  
+
   if (text.length < 10 || text === lastAnalyzedText) {
-    console.log('[Content] Skipping analysis - too short or already analyzed');
     return;
   }
-  
-  console.log('[Content] Setting debounce timer for 0.5 seconds...');
 
   // Debounce: wait for user to stop typing
   debounceTimer = setTimeout(() => {
-    console.log('[Content] Debounce timer fired! Analyzing text...');
     analyzeText(text, e.target);
   }, 500);
 }
 
 function isTextInput(element) {
   const tagName = element.tagName.toLowerCase();
-  const isInput = tagName === 'textarea' || 
+  const isInput = tagName === 'textarea' ||
                   (tagName === 'input' && ['text', 'email', 'search', 'url'].includes(element.type));
   const isContentEditable = element.isContentEditable;
-  
-  const result = isInput || isContentEditable;
-  
-  console.log('[Content] isTextInput check:', {
-    tagName,
-    type: element.type,
-    id: element.id,
-    isInput,
-    isContentEditable,
-    result
-  });
-  
-  return result;
+
+  return isInput || isContentEditable;
 }
 
 function getTextFromElement(element) {
@@ -117,38 +92,28 @@ function setTextInElement(element, text) {
 async function analyzeText(text, element) {
   if (!text || text.length < 10) return;
 
-  console.log('[Content] analyzeText called with text:', text.substring(0, 50) + '...');
-  console.log('[Content] Target element:', element.tagName, element.id);
-
   lastAnalyzedText = text;
   showLoadingIndicator(element);
 
   try {
-    console.log('[Content] Sending message to background...');
     const response = await chrome.runtime.sendMessage({
       type: 'ANALYZE_TEXT',
       text: text
     });
 
-    console.log('[Content] Received response from background:', response);
-
     if (response.error) {
-      console.error('[Content] Error from background:', response.error);
       showError(element, response.error);
       return;
     }
 
     if (response.corrected && response.corrected !== text) {
-      console.log('[Content] Showing correction (text changed)');
       showCorrection(response, element);
     } else {
-      console.log('[Content] No corrections needed (text unchanged)');
       showNoSuggestions(element);
     }
   } catch (error) {
-    console.error('[Content] Error analyzing text:', error);
-    console.error('[Content] Error stack:', error.stack);
-    showError(element, 'Failed to analyze text. Make sure Ollama is running.');
+    console.error('[Ollama] Error:', error.message);
+    showError(element, 'Failed to analyze text. Make sure Ollama is running with CORS support.');
   }
 }
 
@@ -169,8 +134,6 @@ function showLoadingIndicator(element) {
 
 function showCorrection(response, element) {
   removeSuggestionBox();
-
-  console.log('[Content] showCorrection received response:', response);
 
   const box = createSuggestionBox(element);
 
@@ -200,8 +163,6 @@ function showCorrection(response, element) {
       </div>
     `;
     content.appendChild(businessValueBox);
-  } else if (response.businessValue) {
-    console.error('[Content] businessValue is not a string:', typeof response.businessValue, response.businessValue);
   }
 
   // Show issues found
@@ -241,8 +202,6 @@ function showCorrection(response, element) {
       </ul>
     `;
     content.appendChild(issuesList);
-  } else if (response.issues) {
-    console.error('[Content] issues is not an array:', typeof response.issues, response.issues);
   }
 
   // Show before/after comparison
@@ -286,13 +245,11 @@ function showCorrection(response, element) {
 function escapeHtml(text) {
   // Handle non-string inputs
   if (typeof text !== 'string') {
-    // If it's an object, try to stringify it
     if (typeof text === 'object' && text !== null) {
-      console.error('[Content] escapeHtml received object:', text);
       // Try to extract text property if it exists
       if (text.text) return escapeHtml(text.text);
       if (text.message) return escapeHtml(text.message);
-      // Otherwise stringify it for debugging
+      // Otherwise stringify it
       text = JSON.stringify(text);
     } else {
       text = String(text);
@@ -361,13 +318,6 @@ function createSuggestionBox(element) {
   const top = rect.bottom + window.scrollY + 5;
   const left = rect.left + window.scrollX;
   const maxWidth = Math.max(400, rect.width);
-
-  console.log('[Content] Creating suggestion box:', {
-    element: element.tagName + '#' + element.id,
-    rect: { top: rect.top, bottom: rect.bottom, left: rect.left, width: rect.width },
-    position: { top, left, maxWidth },
-    windowScroll: { scrollY: window.scrollY, scrollX: window.scrollX }
-  });
 
   box.style.position = 'fixed';
   box.style.top = `${top}px`;
