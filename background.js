@@ -50,9 +50,9 @@ async function analyzeTextWithOllama(text) {
 Text: "${text}"
 
 Return ONLY valid JSON:
-{"corrected":"fixed text","issues":[{"WHAT":"error description","WHY":"why wrong","RULE":"grammar rule","HELP":"tip"}]}
+{"corrected":"fixed text","toneFeedback":"explanation if tone was improved, empty string if only grammar fixes"}
 
-Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"${text}","issues":[]}`,
+Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"${text}","toneFeedback":""}`,
       stream: false,
       options: {
         temperature: 0.1,

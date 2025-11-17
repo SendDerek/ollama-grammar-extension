@@ -183,43 +183,20 @@ function showCorrection(response, element) {
   `;
   content.appendChild(actions);
 
-  // Show issues found (LAST)
-  if (response.issues && Array.isArray(response.issues) && response.issues.length > 0) {
-    const issuesList = document.createElement('div');
-    issuesList.className = 'cga-issues-list';
-    issuesList.innerHTML = `
-      <div class="cga-issues-header">
-        <span class="cga-learning-icon">💡</span>
-        Learning Points (${response.issues.length}):
+  // Show tone feedback (LAST) - only if there was a tone improvement
+  if (response.toneFeedback && response.toneFeedback.trim() !== '') {
+    const feedbackBox = document.createElement('div');
+    feedbackBox.className = 'cga-tone-feedback';
+    feedbackBox.innerHTML = `
+      <div class="cga-tone-header">
+        <span class="cga-tone-icon">💼</span>
+        Tone Improvement:
       </div>
-      <ul class="cga-educational-list">
-        ${response.issues.map(issue => {
-          // Handle both string and object formats
-          if (typeof issue === 'string') {
-            return `<li><span class="cga-issue-bullet">•</span> ${escapeHtml(issue)}</li>`;
-          } else if (typeof issue === 'object' && issue !== null) {
-            // Structured format with WHAT, WHY, RULE, HELP
-            let issueHtml = '<li class="cga-structured-issue">';
-            if (issue.WHAT) {
-              issueHtml += `<div class="cga-issue-what"><strong>Issue:</strong> ${escapeHtml(issue.WHAT)}</div>`;
-            }
-            if (issue.WHY) {
-              issueHtml += `<div class="cga-issue-why"><strong>Why:</strong> ${escapeHtml(issue.WHY)}</div>`;
-            }
-            if (issue.RULE) {
-              issueHtml += `<div class="cga-issue-rule"><strong>Rule:</strong> ${escapeHtml(issue.RULE)}</div>`;
-            }
-            if (issue.HELP) {
-              issueHtml += `<div class="cga-issue-help">💡 <em>${escapeHtml(issue.HELP)}</em></div>`;
-            }
-            issueHtml += '</li>';
-            return issueHtml;
-          }
-          return '';
-        }).join('')}
-      </ul>
+      <div class="cga-tone-text">
+        ${escapeHtml(response.toneFeedback)}
+      </div>
     `;
-    content.appendChild(issuesList);
+    content.appendChild(feedbackBox);
   }
 
   box.appendChild(content);
