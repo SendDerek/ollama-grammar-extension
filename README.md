@@ -2,6 +2,8 @@
 
 A **completely FREE** Chrome extension that provides AI-powered grammar checking using Ollama with the Qwen 2.5 3B model. No API costs, perfect privacy, unlimited usage.
 
+![Screenshot](screenshot.png)
+
 ## ✨ Features
 
 - 🆓 **$0/month** - Completely free forever
