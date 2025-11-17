@@ -1,6 +1,6 @@
-# 🆓 Ollama Grammar Assistant (Mistral)
+# 🆓 Ollama Grammar Assistant
 
-A **completely FREE** Chrome extension that provides AI-powered grammar checking using Ollama with the Mistral 7B model. No API costs, perfect privacy, unlimited usage.
+A **completely FREE** Chrome extension that provides AI-powered grammar checking using Ollama with the Qwen 2.5 3B model. No API costs, perfect privacy, unlimited usage.
 
 ## ✨ Features
 
@@ -8,8 +8,11 @@ A **completely FREE** Chrome extension that provides AI-powered grammar checking
 - 🔒 **100% Private** - Runs entirely on your computer
 - ♾️ **Unlimited** - Use as much as you want
 - 📡 **Offline** - Works without internet
-- 🎯 **Smart** - Uses Mistral 7B (best for grammar)
-- ⌨️ **Fast** - Keyboard shortcut: Ctrl+Shift+G
+- ⚡ **Fast** - ~2.3 seconds with Qwen 2.5 3B
+- 🎯 **Smart** - One-click comprehensive corrections
+- 💼 **Business Value** - Translates technical jargon to executive speak
+- 🎓 **Educational** - Learn from detailed explanations
+- ⌨️ **Quick** - Keyboard shortcut: Ctrl+Shift+G
 - 🌐 **Universal** - Works on all websites
 
 ## 🚀 Quick Setup (10 Minutes)
@@ -26,18 +29,18 @@ brew install ollama
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-**Windows:**  
+**Windows:**
 Download from [ollama.com/download](https://ollama.com/download)
 
 ---
 
-### Step 2: Download Mistral Model
+### Step 2: Download Qwen 2.5 Model
 
 ```bash
-ollama pull mistral:7b
+ollama pull qwen2.5:3b
 ```
 
-This downloads 4.1GB. Takes 2-5 minutes depending on your connection.
+This downloads 2.3GB. Takes 1-3 minutes depending on your connection.
 
 ---
 
@@ -66,11 +69,11 @@ Should return JSON with your models.
 
 ### Step 4: Install Chrome Extension
 
-1. Open Chrome
-2. Go to: `chrome://extensions/`
+1. Clone or download this repository
+2. Open Chrome and go to: `chrome://extensions/`
 3. Enable **"Developer mode"** (top-right toggle)
 4. Click **"Load unpacked"**
-5. Select this folder: `ollama-mistral-extension`
+5. Select the `ollama-grammar-extension` folder
 6. Extension icon appears! ✅
 
 ---
@@ -80,9 +83,9 @@ Should return JSON with your models.
 1. Click the extension icon in Chrome toolbar
 2. Verify settings:
    - URL: `http://localhost:11434`
-   - Model: Mistral 7B
+   - Model: Qwen 2.5 3B
 3. Click **"Test Connection"**
-   - Should show: "✓ Connected! Mistral model found."
+   - Should show: "✓ Connected! Qwen 2.5 model found."
 4. Click **"Save Settings"**
 
 ---
@@ -91,12 +94,17 @@ Should return JSON with your models.
 
 **Option A - Use Test Page:**
 1. Open `test-page.html` in Chrome
-2. Type: `"I dont think this are correct grammer"`
-3. Wait 1.5 seconds (or press Ctrl+Shift+G)
-4. See suggestions appear!
+2. Click an example phrase or type: `"I dont think this are correct grammer"`
+3. Wait 0.5 seconds (or press Ctrl+Shift+G)
+4. See comprehensive corrections with:
+   - ✅ Fixed grammar and spelling
+   - ✅ Confident, business-casual tone
+   - 💡 Educational explanations (WHAT/WHY/RULE/HELP)
+   - 💼 Business value translation (if technical jargon detected)
+5. Click **"Apply Correction"** to fix everything at once!
 
 **Option B - Try Real Website:**
-1. Go to any website (Gmail, Twitter, etc.)
+1. Go to any website (Gmail, Slack, etc.)
 2. Click in a text field
 3. Type some text with errors
 4. Watch suggestions appear!
@@ -107,31 +115,56 @@ Should return JSON with your models.
 
 ### Automatic Analysis
 1. Type in any text field
-2. Pause for 1.5 seconds
-3. Suggestions appear automatically
+2. Pause for 0.5 seconds
+3. Comprehensive corrections appear automatically
 
 ### Manual Analysis
 Press **Ctrl+Shift+G** (or **Cmd+Shift+G** on Mac)
 
-### Applying Suggestions
-- Click **"Apply"** to accept
+### One-Click Corrections
+- Click **"Apply Correction"** to fix all issues at once
 - Click **"Dismiss"** to ignore
-- Click **"X"** to close all
+- Click **"X"** to close
+
+### What Gets Corrected
+- ✅ Grammar errors (verb agreement, articles, etc.)
+- ✅ Spelling mistakes
+- ✅ Punctuation errors
+- ✅ Hedging language ("I think", "maybe", "possibly")
+- ✅ Tone improvements (confident but polite)
+- ✅ Word choice and clarity
+
+### Special Features
+
+**💼 Business Value Translation:**
+If you write technical content, the extension detects jargon and provides an executive-friendly version:
+
+**Example:**
+- **Technical:** "We need to refactor the database queries to use indexes"
+- **Executive:** "Optimizing our database will reduce server costs by 30% and improve page load times, enhancing user satisfaction"
+
+**🎓 Educational Explanations:**
+Each issue includes:
+- **WHAT**: Brief description of the error
+- **WHY**: Why this is wrong or needs improvement
+- **RULE**: The underlying grammar/style rule
+- **HELP**: A helpful tip to remember for the future
 
 ---
 
-## 🎯 Why Mistral?
+## 🎯 Why Qwen 2.5?
 
-Mistral 7B is specifically good at:
+Qwen 2.5 3B is the perfect balance of speed and quality:
 - ✅ Grammar checking
 - ✅ Spelling corrections
 - ✅ Tone improvements
 - ✅ Professional writing
+- ✅ Fast inference (~2.3 seconds)
 
-**Size:** 4.1GB  
-**RAM:** 8GB recommended  
-**Speed:** 1-2 seconds per check  
-**Quality:** Excellent for grammar  
+**Size:** 2.3GB (smaller than Mistral!)
+**RAM:** 8GB recommended
+**Speed:** ~2.3 seconds per check
+**Quality:** Excellent for grammar
 
 ---
 
@@ -163,14 +196,14 @@ curl http://localhost:11434/api/tags
 ollama list
 ```
 
-**If Mistral is missing, download it:**
+**If Qwen is missing, download it:**
 ```bash
-ollama pull mistral:7b
+ollama pull qwen2.5:3b
 ```
 
 **Verify it's there:**
 ```bash
-ollama list | grep mistral
+ollama list | grep qwen
 ```
 
 ---
@@ -178,35 +211,33 @@ ollama list | grep mistral
 ### Extension not working?
 
 1. ✅ Ollama running? (`ollama serve`)
-2. ✅ Mistral downloaded? (`ollama list`)
+2. ✅ Qwen downloaded? (`ollama list`)
 3. ✅ Extension enabled? (chrome://extensions)
 4. ✅ Test connection successful? (click extension icon)
 5. ✅ Typed 10+ characters?
-6. ✅ Waited 1.5 seconds?
+6. ✅ Waited 0.5 seconds?
 
 **Force analysis:**
 Press **Ctrl+Shift+G**
+
+**Check performance metrics:**
+Open browser console (F12) and look for `⏱️` emoji markers showing:
+- Health check time
+- Generation time
+- Total time
 
 ---
 
 ### Slow performance?
 
-**First request:** 3-5 seconds (model loading)  
-**After that:** 1-2 seconds
+**First request:** 3-5 seconds (model loading)
+**After that:** ~2.3 seconds
 
 **If still slow:**
 - Close other apps to free RAM
 - Check CPU usage
 - Restart Ollama: `killall ollama && ollama serve`
-
----
-
-### Poor suggestions?
-
-Mistral is good but not perfect. For better quality:
-1. Try larger model: `ollama pull llama3.1:8b`
-2. Modify prompt in `background.js`
-3. Or use paid Claude API (better but costs $2-6/month)
+- Try a smaller model: `ollama pull qwen2.5:1.5b`
 
 ---
 
@@ -221,19 +252,17 @@ Mistral is good but not perfect. For better quality:
 
 ### Adjust Analysis Delay
 
-Edit `content.js`, line 46:
+Edit `content.js`, line 77:
 ```javascript
-}, 1500); // Change to 2000 for 2 seconds, etc.
+}, 500); // Change to 1000 for 1 second, etc.
 ```
 
-### Customize Prompt
+### Switch to Different Model
 
-Edit `background.js`, lines 35-60:
+Edit `background.js`, line 27:
 ```javascript
-prompt: `You are a professional writing assistant...`
+const model = 'qwen2.5:3b'; // Change to 'llama3.2:3b', etc.
 ```
-
-Make it stricter, more casual, domain-specific, etc.
 
 ---
 
@@ -241,11 +270,18 @@ Make it stricter, more casual, domain-specific, etc.
 
 | Metric | Value |
 |--------|-------|
-| **First analysis** | 3-5 seconds |
-| **Subsequent** | 1-2 seconds |
-| **RAM usage** | ~8GB |
-| **Disk space** | 4.1GB (model) |
+| **First analysis** | 3-5 seconds (model loading) |
+| **Subsequent** | ~2.3 seconds |
+| **RAM usage** | ~6-8GB |
+| **Disk space** | 2.3GB (model) |
 | **Cost** | $0/month |
+| **Debounce delay** | 0.5 seconds |
+
+**Performance Tracking:**
+The extension logs detailed timing metrics in the console:
+- ⏱️ Health check time (~15ms)
+- ⏱️ Generation time (~2.3s)
+- ⏱️ Total time
 
 ---
 
@@ -263,10 +299,10 @@ With Ollama:
 ## 📁 File Structure
 
 ```
-ollama-mistral-extension/
-├── manifest.json       # Extension config
-├── background.js       # Ollama API calls
-├── content.js          # Text monitoring
+ollama-grammar-extension/
+├── manifest.json       # Extension config (v1.1.0)
+├── background.js       # Ollama API calls + performance tracking
+├── content.js          # Text monitoring + UI
 ├── popup.html          # Settings UI
 ├── popup.js            # Settings logic
 ├── styles.css          # Suggestion styling
@@ -318,45 +354,57 @@ Want to try different models?
 
 ### Faster & Lighter
 ```bash
-ollama pull llama3.2:3b
-# Edit background.js: model = 'llama3.2:3b'
+ollama pull qwen2.5:1.5b
+# Edit background.js: model = 'qwen2.5:1.5b'
+```
+
+### Balanced (Current)
+```bash
+ollama pull qwen2.5:3b  # Already using this!
 ```
 
 ### Better Quality
 ```bash
-ollama pull llama3.1:8b
-# Edit background.js: model = 'llama3.1:8b'
+ollama pull qwen2.5:7b
+# Edit background.js: model = 'qwen2.5:7b'
 ```
 
-### Grammar Specialist
+### Alternative: Llama
 ```bash
-# Mistral is already the best for grammar!
+ollama pull llama3.2:3b
+# Edit background.js: model = 'llama3.2:3b'
 ```
 
 ---
 
 ## ❓ FAQ
 
-**Q: Is this really free?**  
+**Q: Is this really free?**
 A: Yes! $0 forever. No hidden costs.
 
-**Q: How does it compare to Grammarly?**  
-A: Good quality, not quite as smart, but FREE and private!
+**Q: How does it compare to Grammarly?**
+A: Good quality, not quite as smart, but FREE and private! Plus it translates technical jargon to business speak.
 
-**Q: Can I use it offline?**  
+**Q: Can I use it offline?**
 A: Yes! Once models are downloaded.
 
-**Q: Does it work on all websites?**  
+**Q: Does it work on all websites?**
 A: Yes! Gmail, Slack, Twitter, everywhere.
 
-**Q: How much RAM do I need?**  
+**Q: How much RAM do I need?**
 A: 8GB minimum, 16GB recommended.
 
-**Q: Is my data private?**  
+**Q: Is my data private?**
 A: 100%! Nothing leaves your computer.
 
-**Q: Can I switch models?**  
-A: Yes! Edit `background.js` line 13.
+**Q: Can I switch models?**
+A: Yes! Edit `background.js` line 27.
+
+**Q: What's the "Business Value" feature?**
+A: It detects technical jargon and translates it to executive-friendly language that emphasizes business impact (cost savings, revenue, user experience, etc.)
+
+**Q: Why Qwen instead of Mistral?**
+A: Qwen 2.5 3B is faster (~2.3s vs 6-10s), smaller (2.3GB vs 4.1GB), and provides excellent quality for grammar checking.
 
 ---
 
@@ -373,29 +421,36 @@ Then update URL in extension settings.
 2. Change URL in extension: `http://192.168.1.100:11434`
 3. Test connection
 
-### Batch Processing
-The extension debounces by 1.5s to avoid hammering Ollama. Adjust in `content.js` if needed.
+### Performance Optimization
+The extension:
+- Debounces by 0.5s to avoid hammering Ollama
+- Uses optimized prompts (~50 tokens vs 500)
+- Limits response to 400 tokens
+- Tracks detailed timing metrics
+
+Adjust these in `background.js` if needed.
 
 ---
 
 ## 🐛 Known Issues
 
 1. **First analysis slow** - Model loads into RAM (3-5 sec)
-2. **JSON parsing errors** - Mistral sometimes adds extra text
-3. **Positioning** - Some sites with complex CSS may have UI issues
+2. **Test Areas 2 & 3** - Some UI positioning issues on test page (but works on real websites!)
 
 These are minor and don't affect core functionality.
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 Recent Improvements (v1.1.0)
 
-- [ ] Multiple model support in UI
-- [ ] Custom writing styles
-- [ ] Grammar explanations
-- [ ] Writing statistics
-- [ ] Context-aware suggestions
-- [ ] Browser action for selected text
+- ✅ **2-3x faster** - Switched from Mistral 7B to Qwen 2.5 3B
+- ✅ **One-click corrections** - Apply all fixes at once
+- ✅ **Confident tone** - Removes hedging language while staying human
+- ✅ **Business value translation** - Technical → Executive speak
+- ✅ **Educational explanations** - WHAT/WHY/RULE/HELP format
+- ✅ **Performance tracking** - See exact timings in console
+- ✅ **Faster debounce** - 0.5s instead of 1.5s
+- ✅ **Optimized prompts** - 10x smaller, much faster
 
 ---
 
@@ -409,25 +464,31 @@ MIT License - Free to use and modify!
 
 Built with:
 - **Ollama** - Local AI runtime
-- **Mistral 7B** - Grammar-optimized model
+- **Qwen 2.5 3B** - Fast, high-quality language model by Alibaba
 - **Chrome Extensions** - Browser platform
 
 ---
 
 ## 🎉 You're All Set!
 
-You now have FREE, unlimited, private grammar checking!
+You now have FREE, unlimited, private grammar checking with:
+- ✅ One-click comprehensive corrections
+- ✅ Confident, business-casual tone
+- 💼 Business value translation for executives
+- 🎓 Educational explanations to learn from mistakes
+- ⚡ Fast response times (~2.3s)
 
-**Monthly cost:** $0  
-**Privacy:** Perfect  
-**Quality:** Great  
-**Usage:** Unlimited  
+**Monthly cost:** $0
+**Privacy:** Perfect
+**Quality:** Excellent
+**Usage:** Unlimited
 
 Enjoy your free AI writing assistant! ✨
 
 ---
 
 **Need Help?**
-- Ollama Issues: https://github.com/ollama/ollama
-- Extension Issues: Check browser console (F12)
-- Model Issues: `ollama list` and `ollama pull mistral:7b`
+- **GitHub:** https://github.com/SendDerek/ollama-grammar-extension
+- **Ollama Issues:** https://github.com/ollama/ollama
+- **Extension Issues:** Check browser console (F12) for `⏱️` performance metrics
+- **Model Issues:** `ollama list` and `ollama pull qwen2.5:3b`
