@@ -44,18 +44,23 @@ This downloads 2.3GB. Takes 1-3 minutes depending on your connection.
 
 ---
 
-### Step 3: Start Ollama Server
+### Step 3: Start Ollama Server with CORS Support
+
+**IMPORTANT:** Chrome extensions require CORS support. Start Ollama with this command:
 
 ```bash
-ollama serve
+OLLAMA_ORIGINS="chrome-extension://*" ollama serve
 ```
 
-**Important:** Keep this terminal window open!
+**Keep this terminal window open!**
 
 You should see:
 ```
 Listening on 127.0.0.1:11434
 ```
+
+**Why is this needed?**
+Chrome extensions have origins like `chrome-extension://abc123...`. Without setting `OLLAMA_ORIGINS`, Ollama will reject requests from the extension due to CORS (Cross-Origin Resource Sharing) restrictions.
 
 **Verify it's working:**
 ```bash
@@ -177,9 +182,9 @@ Qwen 2.5 3B is the perfect balance of speed and quality:
 ps aux | grep ollama
 ```
 
-**If not running, start it:**
+**If not running, start it with CORS support:**
 ```bash
-ollama serve
+OLLAMA_ORIGINS="chrome-extension://*" ollama serve
 ```
 
 **Test connection:**
@@ -210,12 +215,14 @@ ollama list | grep qwen
 
 ### Extension not working?
 
-1. ✅ Ollama running? (`ollama serve`)
+1. ✅ Ollama running with CORS? (`OLLAMA_ORIGINS="chrome-extension://*" ollama serve`)
 2. ✅ Qwen downloaded? (`ollama list`)
 3. ✅ Extension enabled? (chrome://extensions)
 4. ✅ Test connection successful? (click extension icon)
 5. ✅ Typed 10+ characters?
 6. ✅ Waited 0.5 seconds?
+
+**Most common issue:** Forgetting `OLLAMA_ORIGINS="chrome-extension://*"` when starting Ollama!
 
 **Force analysis:**
 Press **Ctrl+Shift+G**
@@ -225,6 +232,9 @@ Open browser console (F12) and look for `⏱️` emoji markers showing:
 - Health check time
 - Generation time
 - Total time
+
+**Check for CORS errors:**
+If you see errors like "CORS policy" in the console, restart Ollama with the CORS environment variable.
 
 ---
 
@@ -236,7 +246,7 @@ Open browser console (F12) and look for `⏱️` emoji markers showing:
 **If still slow:**
 - Close other apps to free RAM
 - Check CPU usage
-- Restart Ollama: `killall ollama && ollama serve`
+- Restart Ollama: `killall ollama && OLLAMA_ORIGINS="chrome-extension://*" ollama serve`
 - Try a smaller model: `ollama pull qwen2.5:1.5b`
 
 ---
@@ -317,16 +327,18 @@ ollama-grammar-extension/
 
 ## 🔄 Keeping Ollama Running
 
+**Remember:** Always use `OLLAMA_ORIGINS="chrome-extension://*"` for Chrome extension support!
+
 ### Option 1: Terminal Window
 ```bash
-ollama serve
+OLLAMA_ORIGINS="chrome-extension://*" ollama serve
 # Keep this terminal open
 ```
 
 ### Option 2: Background Process
 ```bash
 # macOS/Linux
-ollama serve > /dev/null 2>&1 &
+OLLAMA_ORIGINS="chrome-extension://*" ollama serve > /dev/null 2>&1 &
 
 # To stop later:
 killall ollama
