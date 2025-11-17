@@ -27,11 +27,11 @@ Grammarly costs $12/month ($144/year) and sends all your text to their servers. 
 - ✅ **Unlimited Usage** - Write as much as you want
 
 **Who is this for?**
-- Engineers communicating with leadership
 - Anyone who writes a lot and values privacy
 - People tired of subscription fees
 - Users who want to keep sensitive documents private
 - Anyone learning to write more confidently
+- **Anyone who wants to customize their writing assistant** - The prompt is fully customizable!
 
 **The Trade-off:**
 Grammarly is more sophisticated, but this extension gives you 80% of the value for 0% of the cost, with 100% privacy.
@@ -296,6 +296,45 @@ Edit `background.js`, line 27:
 ```javascript
 const model = 'qwen2.5:3b'; // Change to 'llama3.2:3b', etc.
 ```
+
+### 🎨 Customize the Prompt (Make It Yours!)
+
+**The prompt is just a template!** The default focuses on confident business-casual tone, but you can customize it for YOUR needs.
+
+Edit `background.js`, line 47-55 to change the prompt.
+
+**Example use cases:**
+
+**For Creative Writing:**
+```javascript
+prompt: `Fix grammar and improve prose. Make it vivid and engaging. Return JSON...`
+```
+
+**For Academic Writing:**
+```javascript
+prompt: `Fix grammar and make formal/academic. Avoid contractions. Use sophisticated vocabulary. Return JSON...`
+```
+
+**For Casual/Friendly Tone:**
+```javascript
+prompt: `Fix grammar but keep it super casual and friendly. Use contractions, keep personality. Return JSON...`
+```
+
+**For Technical Documentation:**
+```javascript
+prompt: `Fix grammar and make clear/concise for technical documentation. Remove ambiguity. Return JSON...`
+```
+
+**For Marketing Copy:**
+```javascript
+prompt: `Fix grammar and make persuasive/compelling. Focus on benefits and action. Return JSON...`
+```
+
+The sky's the limit! Customize it for:
+- Your industry/domain
+- Your personal writing style
+- Your audience
+- Your specific goals
 
 ---
 
