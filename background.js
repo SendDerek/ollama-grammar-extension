@@ -89,6 +89,9 @@ Rules: No markdown. Only escape ". Don't escape '.`,
       throw new Error('Empty response from Ollama');
     }
 
+    // Log raw response for debugging
+    console.log('[Ollama] Raw response:', responseText);
+
     // Clean up the response - remove markdown and extra text
     responseText = responseText.trim();
 
@@ -138,6 +141,7 @@ Rules: No markdown. Only escape ". Don't escape '.`,
           original: text
         };
       } catch (secondError) {
+        console.error('[Ollama] Failed to parse JSON:', responseText);
         throw new Error(`Invalid JSON response. Try Ctrl+Shift+G again.`);
       }
     }
