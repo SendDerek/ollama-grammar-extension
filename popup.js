@@ -29,13 +29,13 @@ testBtn.addEventListener('click', async () => {
     if (response.ok) {
       const data = await response.json();
       const models = data.models || [];
-      const hasQwen = models.some(m => m.name.includes('qwen2.5'));
+      const hasMistral = models.some(m => m.name.includes('mistral'));
 
-      if (hasQwen) {
-        connectionStatus.textContent = '✓ Connected! Qwen 2.5 model found.';
+      if (hasMistral) {
+        connectionStatus.textContent = '✓ Connected! Mistral 7B model found.';
         connectionStatus.className = 'status success';
       } else {
-        connectionStatus.textContent = '⚠ Connected, but Qwen 2.5 not found. Run: ollama pull qwen2.5:3b';
+        connectionStatus.textContent = '⚠ Connected, but Mistral not found. Run: ollama pull mistral:7b';
         connectionStatus.className = 'status error';
       }
     } else {

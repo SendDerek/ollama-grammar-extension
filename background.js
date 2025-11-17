@@ -19,7 +19,7 @@ async function analyzeTextWithOllama(text) {
   const { ollamaUrl } = await chrome.storage.sync.get(['ollamaUrl']);
   
   const url = ollamaUrl || 'http://localhost:11434';
-  const model = 'qwen2.5:3b'; // Using Qwen 2.5 3B - best balance of speed and quality
+  const model = 'mistral:7b'; // Using Mistral 7B for better tone understanding
 
   const perfStart = performance.now();
 
@@ -45,19 +45,34 @@ async function analyzeTextWithOllama(text) {
   try {
     const requestBody = {
       model: model,
-      prompt: `Fix grammar and improve clarity. Remove hedging language ("I think", "maybe", "possibly"). Keep natural contractions ("don't", "can't").
+      prompt: `Fix grammar, spelling, punctuation, and make writing confident, professional, AND polite/human.
 
-Text: "${text}"
+FIX:
+- Grammar errors (verb agreement, tense, articles)
+- Spelling mistakes
+- Punctuation (missing periods, commas, apostrophes, etc.)
+- Run-on sentences and fragments
 
-Return ONLY valid JSON:
-{"corrected":"fixed text","toneFeedback":"description of tone/professionalism changes made"}
+REMOVE weak/unconfident language:
+- Hedging: "I think", "I feel", "maybe", "possibly", "perhaps", "kind of", "sort of"
+- Qualifiers: "very", "quite", "basically", "actually", "literally"
+- Passive-aggressive: "per my last email", "as I mentioned"
+- Vague: "stuff", "things", "some"
+- Passive voice where active is better
+- Excessive punctuation (!!!) and all caps (ASAP)
 
-Important:
-- If you removed hedging words or made it more professional, EXPLAIN what you changed in toneFeedback
-- Only set toneFeedback to "" if you ONLY fixed grammar/spelling
-- Example toneFeedback: "Removed hedging language ('I think', 'maybe') for a more confident, professional tone"
+KEEP the human touch:
+- Natural contractions ("don't", "can't")
+- Polite phrasing ("please", "thank you")
+- Warmth while being professional
 
-Rules: No markdown. Only escape ". Don't escape '.`,
+Text to fix: ${text}
+
+Return JSON:
+{
+  "corrected": "put corrected text here",
+  "toneFeedback": "explain confidence/tone changes or empty string"
+}`,
       stream: false,
       options: {
         temperature: 0.1,
@@ -112,8 +127,14 @@ Rules: No markdown. Only escape ". Don't escape '.`,
     if (lastBrace > 0 && lastBrace < responseText.length - 1) {
       responseText = responseText.substring(0, lastBrace + 1);
     }
-    
-    // Try to fix common JSON issues
+
+    // Fix common JSON issues before parsing
+    // Remove trailing commas before } or ]
+    responseText = responseText.replace(/,(\s*[}\]])/g, '$1');
+    // Remove incorrect escaping of single quotes
+    responseText = responseText.replace(/\\'/g, "'");
+
+    // Try to parse JSON
     try {
       // First attempt: parse as-is
       const result = JSON.parse(responseText);
@@ -125,28 +146,9 @@ Rules: No markdown. Only escape ". Don't escape '.`,
         original: text
       };
     } catch (parseError) {
-      // Try to fix common issues
-      let fixedJson = responseText;
-
-      // Fix: Remove trailing commas before } or ]
-      fixedJson = fixedJson.replace(/,(\s*[}\]])/g, '$1');
-
-      // Fix: Remove incorrect escaping of single quotes
-      fixedJson = fixedJson.replace(/\\'/g, "'");
-
-      try {
-        const result = JSON.parse(fixedJson);
-        const perfEnd = performance.now();
-        console.log(`[Ollama] ⏱️  TOTAL: ${(perfEnd - perfStart).toFixed(0)}ms`);
-        return {
-          corrected: result.corrected || text,
-          toneFeedback: result.toneFeedback || '',
-          original: text
-        };
-      } catch (secondError) {
-        console.error('[Ollama] Failed to parse JSON:', responseText);
-        throw new Error(`Invalid JSON response. Try Ctrl+Shift+G again.`);
-      }
+      console.error('[Ollama] Failed to parse JSON:', responseText);
+      console.error('[Ollama] Parse error:', parseError.message);
+      throw new Error(`Invalid JSON response. Try Ctrl+Shift+G again.`);
     }
     
   } catch (error) {
@@ -156,7 +158,7 @@ Rules: No markdown. Only escape ". Don't escape '.`,
 
 // Handle extension installation
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Ollama Grammar Assistant (Qwen 2.5) installed');
+  console.log('Ollama Grammar Assistant (Mistral 7B) installed');
   
   // Set default settings
   chrome.storage.sync.get(['enabled', 'ollamaUrl'], (result) => {
