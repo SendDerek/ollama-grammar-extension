@@ -45,12 +45,12 @@ async function analyzeTextWithOllama(text) {
   try {
     const requestBody = {
       model: model,
-      prompt: `Fix grammar and rewrite for confident, business-casual tone. Remove hedging ("I think", "maybe", "possibly"). Keep contractions ("don't", "can't"). If technical jargon detected, add "businessValue" field with executive-friendly version.
+      prompt: `Fix grammar and improve clarity. Remove hedging language ("I think", "maybe", "possibly"). Keep natural contractions ("don't", "can't").
 
 Text: "${text}"
 
 Return ONLY valid JSON:
-{"corrected":"fixed text","issues":[{"WHAT":"error description","WHY":"why wrong","RULE":"grammar rule","HELP":"tip"}],"businessValue":"optional: executive translation"}
+{"corrected":"fixed text","issues":[{"WHAT":"error description","WHY":"why wrong","RULE":"grammar rule","HELP":"tip"}]}
 
 Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"${text}","issues":[]}`,
       stream: false,
@@ -111,7 +111,6 @@ Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"$
       return {
         corrected: result.corrected || text,
         issues: result.issues || [],
-        businessValue: result.businessValue || null,
         original: text
       };
     } catch (parseError) {
@@ -131,7 +130,6 @@ Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"$
         return {
           corrected: result.corrected || text,
           issues: result.issues || [],
-          businessValue: result.businessValue || null,
           original: text
         };
       } catch (secondError) {

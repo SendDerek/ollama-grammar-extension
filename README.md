@@ -10,7 +10,6 @@ A **completely FREE** Chrome extension that provides AI-powered grammar checking
 - 📡 **Offline** - Works without internet
 - ⚡ **Fast** - ~2.3 seconds with Qwen 2.5 3B
 - 🎯 **Smart** - One-click comprehensive corrections
-- 💼 **Business Value** - Translates technical jargon to executive speak
 - 🎓 **Educational** - Learn from detailed explanations
 - ⌨️ **Quick** - Keyboard shortcut: Ctrl+Shift+G
 - 🌐 **Universal** - Works on all websites
@@ -126,9 +125,8 @@ Should return JSON with your models.
 3. Wait 0.5 seconds (or press Ctrl+Shift+G)
 4. See comprehensive corrections with:
    - ✅ Fixed grammar and spelling
-   - ✅ Confident, business-casual tone
+   - ✅ Improved clarity and tone
    - 💡 Educational explanations (WHAT/WHY/RULE/HELP)
-   - 💼 Business value translation (if technical jargon detected)
 5. Click **"Apply Correction"** to fix everything at once!
 
 **Option B - Try Real Website:**
@@ -159,19 +157,10 @@ Press **Ctrl+Shift+G** (or **Cmd+Shift+G** on Mac)
 - ✅ Spelling mistakes
 - ✅ Punctuation errors
 - ✅ Hedging language ("I think", "maybe", "possibly")
-- ✅ Tone improvements (confident but polite)
 - ✅ Word choice and clarity
 
-### Special Features
+### 🎓 Educational Explanations
 
-**💼 Business Value Translation:**
-If you write technical content, the extension detects jargon and provides an executive-friendly version:
-
-**Example:**
-- **Technical:** "We need to refactor the database queries to use indexes"
-- **Executive:** "Optimizing our database will reduce server costs by 30% and improve page load times, enhancing user satisfaction"
-
-**🎓 Educational Explanations:**
 Each issue includes:
 - **WHAT**: Brief description of the error
 - **WHY**: Why this is wrong or needs improvement
@@ -299,9 +288,9 @@ const model = 'qwen2.5:3b'; // Change to 'llama3.2:3b', etc.
 
 ### 🎨 Customize the Prompt (Make It Yours!)
 
-**The prompt is just a template!** The default focuses on confident business-casual tone, but you can customize it for YOUR needs.
+**The prompt is just a template!** The default focuses on clarity and removing hedging language, but you can customize it for YOUR needs.
 
-Edit `background.js`, line 47-55 to change the prompt.
+Edit `background.js`, line 47-54 to change the prompt.
 
 **Example use cases:**
 
@@ -519,12 +508,11 @@ These are minor and don't affect core functionality.
 
 - ✅ **2-3x faster** - Switched from Mistral 7B to Qwen 2.5 3B
 - ✅ **One-click corrections** - Apply all fixes at once
-- ✅ **Confident tone** - Removes hedging language while staying human
-- ✅ **Business value translation** - Technical → Executive speak
+- ✅ **Cleaner output** - Removes hedging language for clarity
 - ✅ **Educational explanations** - WHAT/WHY/RULE/HELP format
 - ✅ **Performance tracking** - See exact timings in console
 - ✅ **Faster debounce** - 0.5s instead of 1.5s
-- ✅ **Optimized prompts** - 10x smaller, much faster
+- ✅ **Optimized prompts** - Simpler and faster
 
 ---
 
@@ -547,10 +535,10 @@ Built with:
 
 You now have FREE, unlimited, private grammar checking with:
 - ✅ One-click comprehensive corrections
-- ✅ Confident, business-casual tone
-- 💼 Business value translation for executives
+- ✅ Improved clarity and readability
 - 🎓 Educational explanations to learn from mistakes
 - ⚡ Fast response times (~2.3s)
+- 🎨 Fully customizable prompts
 
 **Monthly cost:** $0
 **Privacy:** Perfect

@@ -148,23 +148,6 @@ function showCorrection(response, element) {
   const content = document.createElement('div');
   content.className = 'cga-correction-content';
 
-  // Show business value translation if available
-  if (response.businessValue && typeof response.businessValue === 'string') {
-    const businessValueBox = document.createElement('div');
-    businessValueBox.className = 'cga-business-value';
-    businessValueBox.innerHTML = `
-      <div class="cga-business-value-header">
-        <span class="cga-business-icon">💼</span>
-        Executive-Friendly Version:
-      </div>
-      <div class="cga-business-value-text">${escapeHtml(response.businessValue)}</div>
-      <div class="cga-business-value-tip">
-        💡 Tip: This version emphasizes business impact for leadership communication
-      </div>
-    `;
-    content.appendChild(businessValueBox);
-  }
-
   // Show issues found
   if (response.issues && Array.isArray(response.issues) && response.issues.length > 0) {
     const issuesList = document.createElement('div');
