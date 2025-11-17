@@ -50,9 +50,14 @@ async function analyzeTextWithOllama(text) {
 Text: "${text}"
 
 Return ONLY valid JSON:
-{"corrected":"fixed text","toneFeedback":"explanation if tone was improved, empty string if only grammar fixes"}
+{"corrected":"fixed text","toneFeedback":"description of tone/professionalism changes made"}
 
-Rules: No markdown. Only escape ". Don't escape '. If no errors: {"corrected":"${text}","toneFeedback":""}`,
+Important:
+- If you removed hedging words or made it more professional, EXPLAIN what you changed in toneFeedback
+- Only set toneFeedback to "" if you ONLY fixed grammar/spelling
+- Example toneFeedback: "Removed hedging language ('I think', 'maybe') for a more confident, professional tone"
+
+Rules: No markdown. Only escape ". Don't escape '.`,
       stream: false,
       options: {
         temperature: 0.1,
