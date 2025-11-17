@@ -35,6 +35,10 @@ function handleFocus(e) {
 function handleBlur(e) {
   if (e.target === activeElement) {
     setTimeout(() => {
+      // Don't close if clicking inside the suggestion box
+      if (suggestionBox && suggestionBox.contains(document.activeElement)) {
+        return;
+      }
       if (document.activeElement !== activeElement) {
         activeElement = null;
         removeSuggestionBox();
@@ -154,7 +158,32 @@ function showCorrection(response, element) {
   const content = document.createElement('div');
   content.className = 'cga-correction-content';
 
-  // Show issues found
+  // Show before/after comparison (FIRST)
+  const comparison = document.createElement('div');
+  comparison.className = 'cga-comparison';
+  comparison.innerHTML = `
+    <div class="cga-comparison-section">
+      <div class="cga-comparison-label">Original:</div>
+      <div class="cga-original-text">${escapeHtml(response.original)}</div>
+    </div>
+    <div class="cga-comparison-arrow">↓</div>
+    <div class="cga-comparison-section">
+      <div class="cga-comparison-label">Corrected:</div>
+      <div class="cga-corrected-text">${escapeHtml(response.corrected)}</div>
+    </div>
+  `;
+  content.appendChild(comparison);
+
+  // Action buttons (SECOND)
+  const actions = document.createElement('div');
+  actions.className = 'cga-actions';
+  actions.innerHTML = `
+    <button class="cga-apply-all-btn">Apply Correction</button>
+    <button class="cga-dismiss-btn">Dismiss</button>
+  `;
+  content.appendChild(actions);
+
+  // Show issues found (LAST)
   if (response.issues && Array.isArray(response.issues) && response.issues.length > 0) {
     const issuesList = document.createElement('div');
     issuesList.className = 'cga-issues-list';
@@ -192,31 +221,6 @@ function showCorrection(response, element) {
     `;
     content.appendChild(issuesList);
   }
-
-  // Show before/after comparison
-  const comparison = document.createElement('div');
-  comparison.className = 'cga-comparison';
-  comparison.innerHTML = `
-    <div class="cga-comparison-section">
-      <div class="cga-comparison-label">Original:</div>
-      <div class="cga-original-text">${escapeHtml(response.original)}</div>
-    </div>
-    <div class="cga-comparison-arrow">↓</div>
-    <div class="cga-comparison-section">
-      <div class="cga-comparison-label">Corrected:</div>
-      <div class="cga-corrected-text">${escapeHtml(response.corrected)}</div>
-    </div>
-  `;
-  content.appendChild(comparison);
-
-  // Action buttons
-  const actions = document.createElement('div');
-  actions.className = 'cga-actions';
-  actions.innerHTML = `
-    <button class="cga-apply-all-btn">Apply Correction</button>
-    <button class="cga-dismiss-btn">Dismiss</button>
-  `;
-  content.appendChild(actions);
 
   box.appendChild(content);
 
