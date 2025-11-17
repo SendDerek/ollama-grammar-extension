@@ -66,6 +66,9 @@ Rules: No markdown. Only escape ". Don't escape '.`,
       }
     };
 
+    // Log request for debugging
+    console.log('[Ollama] Request prompt:', requestBody.prompt);
+
     const genStart = performance.now();
     const response = await fetch(`${url}/api/generate`, {
       method: 'POST',
