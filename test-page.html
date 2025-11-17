@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Ollama Grammar Assistant</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+      width: 100%;
+      padding: 40px;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 26px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .free-badge {
+      background: #10b981;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: 8px;
+    }
+    
+    .test-section {
+      margin-bottom: 30px;
+    }
+    
+    .test-section h2 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .test-section p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    textarea:focus, input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+    
+    .examples {
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    
+    .examples h3 {
+      font-size: 13px;
+      color: #065f46;
+      margin-bottom: 8px;
+    }
+    
+    .example-text {
+      background: white;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: 1px solid #d1fae5;
+    }
+    
+    .example-text:hover {
+      background: #d1fae5;
+    }
+    
+    .instructions {
+      background: #e7f6f2;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 30px;
+    }
+    
+    .instructions h3 {
+      font-size: 14px;
+      color: #065f46;
+      margin-bottom: 10px;
+    }
+    
+    .instructions ul {
+      margin-left: 20px;
+      font-size: 12px;
+      color: #065f46;
+      line-height: 1.8;
+    }
+    
+    code {
+      background: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Test Ollama Grammar <span class="free-badge">Improved</span></h1>
+    <p class="subtitle">Type in the fields below. The extension will analyze after you stop typing for 0.5 seconds, or press <code>Ctrl+Shift+G</code> immediately. All corrections applied in one click!</p>
+    
+    <div class="test-section">
+      <h2>📝 Test Area 1: Textarea</h2>
+      <p>Try typing text with errors:</p>
+      <textarea id="test1" placeholder="Type here... Try: 'I dont think this are correct grammer'"></textarea>
+      
+      <div class="examples">
+        <h3>💡 Grammar & Confidence Examples:</h3>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          I dont think this are correct grammer and the tone sound unprofessional
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          I think maybe we should possibly consider this approach for the new feature
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          I'm not sure if this is right, but maybe we could try implementing it this way
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          I believe the code might be kind of inefficient and could possibly be optimized
+        </div>
+        <h3 style="margin-top: 12px;">💼 Technical → Business Value Examples:</h3>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          We need to refactor the database queries to use indexes
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          I think maybe we should migrate to microservices architecture
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          The API latency is 500ms which is too high
+        </div>
+        <div class="example-text" onclick="insertText(0, this.textContent.trim())">
+          We should implement caching to reduce load on the backend servers
+        </div>
+      </div>
+    </div>
+    
+    <div class="test-section">
+      <h2>✍️ Test Area 2: Input Field</h2>
+      <p>Standard text input:</p>
+      <input type="text" id="test2" placeholder="Type a message... Try: 'Please could you maybe help me?'">
+    </div>
+    
+    <div class="test-section">
+      <h2>📧 Test Area 3: Another Textarea</h2>
+      <p>Email-style composition:</p>
+      <textarea id="test3" placeholder="Write an email..."></textarea>
+      
+      <div class="examples">
+        <h3>💡 Email examples (with technical jargon):</h3>
+        <div class="example-text" onclick="insertText(2, this.textContent.trim())">
+          We need to refactor the database queries to use indexes because the current queries are slow
+        </div>
+        <div class="example-text" onclick="insertText(2, this.textContent.trim())">
+          I think maybe we should migrate to microservices architecture for better scalability
+        </div>
+        <div class="example-text" onclick="insertText(2, this.textContent.trim())">
+          The API latency is 500ms which is too high and we need to optimize it
+        </div>
+        <div class="example-text" onclick="insertText(2, this.textContent.trim())">
+          We should implement caching to reduce load on the backend servers
+        </div>
+      </div>
+    </div>
+    
+    <div class="instructions">
+      <h3>📋 How to Use:</h3>
+      <ul>
+        <li>Make sure Ollama is running: <code>ollama serve</code></li>
+        <li>Make sure Qwen is downloaded: <code>ollama pull qwen2.5:3b</code> (best speed/quality!)</li>
+        <li>Extension should be installed and enabled</li>
+        <li>Type or click an example above</li>
+        <li>Wait 0.5 seconds OR press <code>Ctrl+Shift+G</code></li>
+        <li>Review the corrected text and click "Apply Correction" to fix everything at once!</li>
+        <li>Check console for performance metrics (⏱️ symbols)</li>
+      </ul>
+      <h3>✨ What's New:</h3>
+      <ul>
+        <li><strong>Much Faster:</strong> Qwen 2.5 3B model + optimized prompt = 2-3x speed boost!</li>
+        <li><strong>Performance Tracking:</strong> See exact timings in console (health check, generation, total)</li>
+        <li><strong>One-Click Fix:</strong> All grammar, spelling, and tone issues corrected together</li>
+        <li><strong>Confident Tone:</strong> Removes hedging language while staying human and natural</li>
+        <li><strong>💡 Learn as You Go:</strong> Detailed educational explanations for each issue</li>
+        <li><strong>💼 Executive Speak:</strong> Translates technical jargon into business value for leadership communication!</li>
+      </ul>
+      <h3>🎯 Perfect For:</h3>
+      <ul>
+        <li>Communicating with company president and leadership</li>
+        <li>Presenting technical work to non-technical stakeholders</li>
+        <li>Writing confident, professional emails to peers and managers</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    function insertText(fieldIndex, text) {
+      const fields = [
+        document.getElementById('test1'),
+        document.getElementById('test2'),
+        document.getElementById('test3')
+      ];
+      
+      const field = fields[fieldIndex];
+      field.value = text;
+      field.focus();
+      
+      // Trigger input event
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  </script>
+</body>
+</html>
