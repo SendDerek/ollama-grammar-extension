@@ -15,6 +15,29 @@ A **completely FREE** Chrome extension that provides AI-powered grammar checking
 - ⌨️ **Quick** - Keyboard shortcut: Ctrl+Shift+G
 - 🌐 **Universal** - Works on all websites
 
+## 💡 Why This Exists
+
+**TL;DR:** A free, private alternative to Grammarly.
+
+Grammarly costs $12/month ($144/year) and sends all your text to their servers. This extension:
+- ✅ **Costs $0/month** - Forever free, no subscriptions
+- ✅ **100% Private** - Your text never leaves your computer
+- ✅ **No Data Mining** - We don't collect, store, or sell your data
+- ✅ **Open Source** - You can see exactly what it does
+- ✅ **Unlimited Usage** - Write as much as you want
+
+**Who is this for?**
+- Engineers communicating with leadership
+- Anyone who writes a lot and values privacy
+- People tired of subscription fees
+- Users who want to keep sensitive documents private
+- Anyone learning to write more confidently
+
+**The Trade-off:**
+Grammarly is more sophisticated, but this extension gives you 80% of the value for 0% of the cost, with 100% privacy.
+
+---
+
 ## 🚀 Quick Setup (10 Minutes)
 
 ### Step 1: Install Ollama
