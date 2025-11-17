@@ -115,7 +115,7 @@ Rules: No markdown. Only escape ". Don't escape '.`,
       console.log(`[Ollama] ⏱️  TOTAL: ${(perfEnd - perfStart).toFixed(0)}ms`);
       return {
         corrected: result.corrected || text,
-        issues: result.issues || [],
+        toneFeedback: result.toneFeedback || '',
         original: text
       };
     } catch (parseError) {
@@ -134,7 +134,7 @@ Rules: No markdown. Only escape ". Don't escape '.`,
         console.log(`[Ollama] ⏱️  TOTAL: ${(perfEnd - perfStart).toFixed(0)}ms`);
         return {
           corrected: result.corrected || text,
-          issues: result.issues || [],
+          toneFeedback: result.toneFeedback || '',
           original: text
         };
       } catch (secondError) {
