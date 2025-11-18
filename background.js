@@ -12,7 +12,45 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     return true; // Keep message channel open for async response
   }
+
+  if (request.type === 'CHECK_OLLAMA') {
+    checkOllamaAvailability()
+      .then(result => {
+        sendResponse(result);
+      })
+      .catch(error => {
+        sendResponse({ available: false, error: error.message });
+      });
+    return true; // Keep message channel open for async response
+  }
 });
+
+async function checkOllamaAvailability() {
+  // Get settings from storage
+  const { ollamaUrl } = await chrome.storage.sync.get(['ollamaUrl']);
+  const url = ollamaUrl || 'http://localhost:11434';
+
+  try {
+    const healthCheck = await fetch(`${url}/api/tags`, {
+      method: 'GET',
+    });
+
+    if (!healthCheck.ok) {
+      return {
+        available: false,
+        error: `Ollama server responded with ${healthCheck.status}`
+      };
+    }
+
+    await healthCheck.json();
+    return { available: true };
+  } catch (error) {
+    return {
+      available: false,
+      error: `Cannot connect to Ollama at ${url}. Make sure it's running with CORS support.`
+    };
+  }
+}
 
 async function analyzeTextWithOllama(text) {
   // Get settings from storage

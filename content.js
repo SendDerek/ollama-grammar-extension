@@ -102,6 +102,23 @@ async function analyzeText(text, element) {
     return;
   }
 
+  // Preliminary check: Verify Ollama is running before showing loading indicator
+  try {
+    const healthCheck = await chrome.runtime.sendMessage({
+      type: 'CHECK_OLLAMA'
+    });
+
+    if (!healthCheck.available) {
+      // Silently fail - don't show suggestions if Ollama isn't running
+      console.log('[Ollama] Server not available, skipping analysis');
+      return;
+    }
+  } catch (error) {
+    // Silently fail - don't show error if health check fails
+    console.log('[Ollama] Health check failed, skipping analysis:', error.message);
+    return;
+  }
+
   lastAnalyzedText = text;
   showLoadingIndicator(element);
 
